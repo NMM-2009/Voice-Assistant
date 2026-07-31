@@ -84,8 +84,6 @@ weights, biases = setUp([len(trainingData[0][0]), len(trainingData[0][1])])
 learningRate = 0.5
 
 for epoch in range(1000):
-    totalLoss = 0
-
     for number in range(len(trainingData)):
         inputs = trainingData[number][0]
         answer = trainingData[number][1]
@@ -93,7 +91,9 @@ for epoch in range(1000):
         guess = forwardPass(inputs, weights, biases)
         loss, error = calculateLoss(guess, answer)
         weights, biases = adjust(weights, biases, inputs, error, learningRate)
-        totalLoss += loss
     
-    if epoch % 100 == 0:
-        print(f"Epoch {epoch}, Average loss: {totalLoss / len(trainingData)}")
+settingsFile = open("NeuralNetworkSetting.txt", "w")
+settingsFile.write(str(weights))
+settingsFile.write("\n")
+settingsFile.write(str(biases))
+settingsFile.write("\n")
