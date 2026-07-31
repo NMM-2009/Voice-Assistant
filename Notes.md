@@ -13,3 +13,6 @@
 - Claude explained gradient descent and how to adjust the weights and biases
 - Added functions for training and tested it on made up data and got loss down from 2.9989 to 0.00029 after 1000 iterations
 - Learnt about epochs and added a way to train with multiple test inputs and answers
+- Got neural network to save it's weights and biases into a text file with help from [w3 schools](https://www.w3schools.com/python/python_file_open.asp)
+- Made VoiceAssistant.py and got claude to generate some sentences which the file converted into training data for the neural network
+- VoiceAssistant.py can now figure out intent if it is one of 4 functions (weather, time, calculate or search) although it struggles differentiating between weather and search sometimes because words are similar
