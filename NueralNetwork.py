@@ -45,4 +45,55 @@ def forwardPass(inputs, weights, biases):
     for i in range(len(rawData)):
         rawData[i] += biases[i]
     outputs = softmax(rawData)
-    return(outputs)
+    return outputs
+
+def calculateLoss(guess, answer):
+    error = []
+    pos = answer.index(1)
+    p_correct = guess[pos]
+    if p_correct == 0:
+        p_correct = 1e-15 # log(0) is undefined and softmax shouldn't output something between 0 and 1e-15 anyway
+    for i in range(len(guess)):
+        error.append(guess[i] - answer[i])
+    return -(math.log(p_correct)), error
+
+def adjust(weights, biases, inputs, error, learningRate):
+    # Subtract learningRate * gradient to move in opposite direction (gradient descent)
+    for i in range(len(weights)):
+        for j in range(len(inputs)):
+            weights[i][j] = weights[i][j] - learningRate * error[i] * inputs[j]
+    for i in range(len(biases)):
+        biases[i] = biases[i] - learningRate * error[i]
+    return weights, biases
+
+
+trainingData = [
+    [[0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 1], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 1, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 1, 1], [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]],
+    [[0, 0, 1, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]],
+    [[0, 0, 1, 0, 1], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]],
+    [[0, 0, 1, 1, 0], [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]],
+    [[0, 0, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]],
+    [[0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]],
+    [[0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]],
+]
+
+weights, biases = setUp([len(trainingData[0][0]), len(trainingData[0][1])])
+learningRate = 0.5
+
+for epoch in range(1000):
+    totalLoss = 0
+
+    for number in range(len(trainingData)):
+        inputs = trainingData[number][0]
+        answer = trainingData[number][1]
+
+        guess = forwardPass(inputs, weights, biases)
+        loss, error = calculateLoss(guess, answer)
+        weights, biases = adjust(weights, biases, inputs, error, learningRate)
+        totalLoss += loss
+    
+    if epoch % 100 == 0:
+        print(f"Epoch {epoch}, Average loss: {totalLoss / len(trainingData)}")
