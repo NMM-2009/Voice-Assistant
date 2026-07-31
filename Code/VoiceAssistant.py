@@ -1,5 +1,6 @@
 import NeuralNetwork as nn
 import ast
+import TTS as TTS
 
 file = open("NeuralNetworkSetting.txt", "r")
 weights = ast.literal_eval(file.readline())
@@ -21,10 +22,12 @@ vocabulary = {
 
     "who": 45, "search": 46, "look": 47, "up": 48, "find": 49, "tell": 50,
     "about": 51, "information": 52, "define": 53, "meaning": 54,
-    "explain": 55, "summarize": 56, "wikipedia": 57, "why": 58, "how": 59,
-    "when": 60, "where": 61
+    "explain": 55, "summarise": 56, "wikipedia": 57, "why": 58, "how": 59,
+    "when": 60, "where": 61, "according": 62
 }
 
+
+# Creating training data
 
 #sentences = [
 #    "whats the weather like today", [1, 0, 0, 0],
@@ -79,10 +82,10 @@ for i in range(len(answer)):
         choice = i
 match choice:
     case 0:
-        print("Weather")
+        TTS.speak("Weather")
     case 1:
-        print("Time")
+        TTS.speak("Time")
     case 2:
-        print("Calculate")
+        TTS.speak("Calculate")
     case 3:
-        print("Search")
+        TTS.speak("Search")
