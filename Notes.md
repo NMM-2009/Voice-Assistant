@@ -16,10 +16,7 @@
 - Got neural network to save it's weights and biases into a text file with help from [w3 schools](https://www.w3schools.com/python/python_file_open.asp)
 - Made VoiceAssistant.py and got claude to generate some sentences which the file converted into training data for the neural network
 - VoiceAssistant.py can now figure out intent if it is one of 4 functions (weather, time, calculate or search) although it struggles differentiating between weather and search sometimes because words are similar
+- Fixed the confusion in the neural network by manually adding that scenario to the training data and more words to the vocabulary dictionary
 - Tested out an online text to speech (TTS) module with help from [pypi.org](https://pypi.org/project/edge-tts/) and [videosdk.live](https://videosdk.live/developer-hub/ai/edge-tts)
 - Used pygame-ce to play back the audio files and got it to speak from the VoiceAssistance script
 - It reuses the same audio file each time so doesn't make a load of files
-
-## Day 3
-- Rewrote all the training data and made an algorithm to generate it from example sentences and answers with help from [w3 schools](https://www.w3schools.com/python/ref_func_enumerate.asp)
-- Moved training data generation to NeuralNetwork.py
