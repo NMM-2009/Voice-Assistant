@@ -20,3 +20,7 @@
 - Tested out an online text to speech (TTS) module with help from [pypi.org](https://pypi.org/project/edge-tts/) and [videosdk.live](https://videosdk.live/developer-hub/ai/edge-tts)
 - Used pygame-ce to play back the audio files and got it to speak from the VoiceAssistance script
 - It reuses the same audio file each time so doesn't make a load of files
+
+## Day 3
+- Rewrote training data code to make it generate data based on sentences instead of hardcoding it with help from [w3 schools](https://www.w3schools.com/python/default.asp)
+- Moved all training data code to be in NeuralNetwork.py
