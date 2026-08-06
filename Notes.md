@@ -34,3 +34,5 @@
 - Tried out other search engine APIs but they al had issues e.g. limits and costs
 - Decided to instead give the input to wikipedia and, if it was unsure of the response, give it to gemini
 - Filtered out filler words to have wikipedia give better responses
+- Google has age restrictions on google ai studio so can't use gemini and other models have the same so I'll leave the ai and explain sections for now
+- The search function still has errors when the actual wikipedia page has strange formatting since it only gets the first paragraph from the api so, if there is an enter, it will cut short

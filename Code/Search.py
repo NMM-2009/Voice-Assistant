@@ -27,8 +27,5 @@ def search(question):
     temp = requests.get(f"https://en.wikipedia.org/api/rest_v1/page/summary/{title}", headers = headers)
     page = temp.json()
     
-    if page["type"] == "disambiguation":
-        return 0
-    else:
-        summary = page["extract"]
-        return summary
+    summary = page["extract"]
+    return summary
