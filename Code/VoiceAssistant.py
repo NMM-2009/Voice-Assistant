@@ -1,6 +1,7 @@
 import NeuralNetwork as nn
 import ast
 import TTS
+import Search
 
 file = open("NeuralNetworkSetting.txt", "r")
 weights = ast.literal_eval(file.readline())
@@ -23,4 +24,7 @@ match choice:
     case 2:
         TTS.speak("Calculate")
     case 3:
-        TTS.speak("Search")
+        summary = Search.search(sentence)
+        TTS.speak(summary)
+    case 4:
+        TTS.speak("explain")
