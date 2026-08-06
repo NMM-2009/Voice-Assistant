@@ -24,3 +24,15 @@
 ## Day 3
 - Rewrote training data code to make it generate data based on sentences instead of hardcoding it with help from [w3 schools](https://www.w3schools.com/python/default.asp)
 - Moved all training data code to be in NeuralNetwork.py
+- Created Search.py to get a summary from wikipedia but had issues with permission and got 403 errors
+- Changed headers to the github repository and it worked
+- Wikipedia searching worked but it would occasionally get mixed up and give unrelated articles e.g. giving information on Roman Church when asked about Roman Empire. Can probably be fixed by filtering out words since it struggles when given a sentence instead of just a topic name
+
+## Day 4
+- Separated out search and explain functionality in neural network and trained it on new data and have explain give the input to gemini
+- Experimented on using DuckDuckGo API to get a quick overview for searches but it wasn't working due to it defaulting my requests to testing
+- Tried out other search engine APIs but they al had issues e.g. limits and costs
+- Decided to instead give the input to wikipedia and, if it was unsure of the response, give it to gemini
+- Filtered out filler words to have wikipedia give better responses
+- Google has age restrictions on google ai studio so can't use gemini and other models have the same so I'll leave the ai and explain sections for now
+- The search function still has errors when the actual wikipedia page has strange formatting since it only gets the first paragraph from the api so, if there is an enter, it will cut short
