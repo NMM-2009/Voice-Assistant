@@ -14,7 +14,7 @@
 - Added functions for training and tested it on made up data and got loss down from 2.9989 to 0.00029 after 1000 iterations
 - Learnt about epochs and added a way to train with multiple test inputs and answers
 - Got neural network to save it's weights and biases into a text file with help from [w3 schools](https://www.w3schools.com/python/python_file_open.asp)
-- Made VoiceAssistant.py and got claude to generate some sentences which the file converted into training data for the neural network
+- Made VoiceAssistant.py and got Claude to generate some sentences which the file converted into training data for the neural network
 - VoiceAssistant.py can now figure out intent if it is one of 4 functions (weather, time, calculate or search) although it struggles differentiating between weather and search sometimes because words are similar
 - Fixed the confusion in the neural network by manually adding that scenario to the training data and more words to the vocabulary dictionary
 - Tested out an online text to speech (TTS) module with help from [pypi.org](https://pypi.org/project/edge-tts/) and [videosdk.live](https://videosdk.live/developer-hub/ai/edge-tts)
@@ -25,7 +25,7 @@
 - Rewrote training data code to make it generate data based on sentences instead of hardcoding it with help from [w3 schools](https://www.w3schools.com/python/default.asp)
 - Moved all training data code to be in NeuralNetwork.py
 - Created Search.py to get a summary from wikipedia but had issues with permission and got 403 errors
-- Changed headers to the github repository and it worked
+- Changed headers to the Github repository and it worked
 - Wikipedia searching worked but it would occasionally get mixed up and give unrelated articles e.g. giving information on Roman Church when asked about Roman Empire. Can probably be fixed by filtering out words since it struggles when given a sentence instead of just a topic name
 
 ## Day 4
@@ -36,11 +36,11 @@
 - Filtered out filler words to have wikipedia give better responses
 - Google has age restrictions on google ai studio so can't use gemini and other models have the same so I'll leave the ai and explain sections for now
 - The search function still has errors when the actual wikipedia page has strange formatting since it only gets the first paragraph from the api so, if there is an enter, it will cut short
-- Learnt some html and css from claude and [w3 schools](https://www.w3schools.com/html/default.asp)
+- Learnt some html and css from Claude and [w3 schools](https://www.w3schools.com/html/default.asp)
 - Got a basic design working and got a simple animation to play
 
 ## Day 5 
-- Decided to restructure the searching fucntions once again and instead of a separate search and explain, feed it straight to a llm and tell the llm that it has access to a search tool
+- Decided to restructure the searching functions once again and instead of a separate search and explain, feed it straight to a llm and tell the llm that it has access to a search tool
 - Got claude to explain what a tokeniser is and how they work so I can use one for the calculate function
 - Claude explained how enums work and used them to make a Token class to store what kind of token it is (the enum) and it's value
 - Created the tokeniser but it repeated the first number given and never gave the last number
@@ -49,8 +49,8 @@
 - Added tokens for brackets
 - Had many issues trying to combine numbers and operators back into 1 list in the right order so rewrote it to keep everything in one list and instead of adding numbers when it came across a space, it does so whenever it comes across as operator
 - Had issues distinguishing between minus and a negative number in the new way but fixed by tracking if the previous token was a number or right bracket
-- Had claude explain both the shunting yard algorithm and small recursive descent parser and decided to use shunting yard algorithm as it seemed simpler to understand
-- I went through multiple examples including with brackets until I understood how it worked then added created afunction to do the same thing
+- Had Claude explain both the shunting yard algorithm and small recursive descent parser and decided to use shunting yard algorithm as it seemed simpler to understand
+- I went through multiple examples including with brackets until I understood how it worked then added created a function to do the same thing
 - Created dictionary to turn operator token types into functions
 - Created a calculate function to get the tokens and actually calculate with them
-- Restructured it so only calculate() needs to be called, not calculate(shuntingYard(tokenise()))
+- Restructured it so only ```calculate()``` needs to be called, not ```calculate(shuntingYard(tokenise()))```
