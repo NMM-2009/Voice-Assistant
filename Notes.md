@@ -38,3 +38,14 @@
 - The search function still has errors when the actual wikipedia page has strange formatting since it only gets the first paragraph from the api so, if there is an enter, it will cut short
 - Learnt some html and css from claude and [w3 schools](https://www.w3schools.com/html/default.asp)
 - Got a basic design working and got a simple animation to play
+
+## Day 5 
+- Decided to restructure the searching fucntions once again and instead of a separate search and explain, feed it straight to a llm and tell the llm that it has access to a search tool
+- Got claude to explain what a tokeniser is and how they work so I can use one for the calculate function
+- Claude explained how enums work and used them to make a Token class to store what kind of token it is (the enum) and it's value
+- Created the tokeniser but it repeated the first number given and never gave the last number
+- I was missing a + 1 somewhere and it missed the last number since i only added the numbers when it came across a space but there is no space after the last number so it wasn't being stored anywhere
+- Realised I forgot about negative numbers so I added that
+- Added tokens for brackets
+- Had many issues trying to combine numbers and operators back into 1 list in the right order so rewrote it to keep everything in one list and instead of adding numbers when it came across a space, it does so whenever it comes across as operator
+- Had issues distinguishing between minus and a negative number in the new way but fixed by tracking if the previous token was a number or right bracket
