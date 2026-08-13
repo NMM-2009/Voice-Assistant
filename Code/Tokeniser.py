@@ -37,7 +37,7 @@ def tokenise(input):
                 continue
             else:
                 if len(currentNumber) > 0:
-                    tokens.append(Token(TokenType.NUMBER, "".join(currentNumber)))
+                    tokens.append(Token(TokenType.NUMBER, float("".join(currentNumber))))
                     tokenPosition += 1
                     currentNumber = []
                 match character:
@@ -68,8 +68,74 @@ def tokenise(input):
     
     # Will always end with a number so add it to tokens
     if len(currentNumber) > 0:
-        tokens.append(Token(TokenType.NUMBER, "".join(currentNumber)))
+        tokens.append(Token(TokenType.NUMBER, float("".join(currentNumber))))
         tokenPosition += 1
         currentNumber = []
 
     return tokens
+
+precedence = {
+    TokenType.PLUS: 1,
+    TokenType.MINUS: 1,
+    TokenType.TIMES: 2,
+    TokenType.DIVIDE: 2,
+}
+
+def shuntingYard(tokens):
+    output = []
+    operator = []
+    for token in tokens:
+        if token.type == TokenType.NUMBER:
+            output.append(token)
+        else:
+            if token.type == TokenType.LBRACKET:
+                operator.append(token)
+            else:
+                if len(operator) == 0:
+                    operator.append(token)
+                elif operator[-1].type == TokenType.LBRACKET:
+                    operator.append(token)
+                elif token.type == TokenType.RBRACKET:
+                    while operator[-1].type != TokenType.LBRACKET:
+                        output.append(operator.pop())
+                    operator.pop()
+                elif precedence[token.type] > precedence[operator[-1].type]:
+                    operator.append(token)
+                else:
+                    while (len(operator) > 0 and operator[-1].type != TokenType.LBRACKET and precedence[operator[-1].type] >= precedence[token.type]):
+                        output.append(operator.pop())
+                    operator.append(token)
+                
+    numOperators = len(operator)
+    for i in range(numOperators):
+        output.append(operator.pop())
+    
+    return output
+
+def add(a, b):
+    return a + b
+def subtract(a, b):
+    return a - b
+def multiply(a, b):
+    return a * b
+def divide(a, b):
+    return a / b
+
+operations = {
+    TokenType.PLUS : add,
+    TokenType.MINUS : subtract,
+    TokenType.TIMES : multiply,
+    TokenType.DIVIDE : divide,
+}
+
+def calculate(input):
+    input = shuntingYard(tokenise(input))
+    numbers = []
+    for token in input:
+        if token.type == TokenType.NUMBER:
+            numbers.append(token.value)
+        else:
+            b = numbers.pop()
+            a = numbers.pop()
+            numbers.append(operations[token.type](a, b))
+    return numbers[0]

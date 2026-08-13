@@ -49,3 +49,8 @@
 - Added tokens for brackets
 - Had many issues trying to combine numbers and operators back into 1 list in the right order so rewrote it to keep everything in one list and instead of adding numbers when it came across a space, it does so whenever it comes across as operator
 - Had issues distinguishing between minus and a negative number in the new way but fixed by tracking if the previous token was a number or right bracket
+- Had claude explain both the shunting yard algorithm and small recursive descent parser and decided to use shunting yard algorithm as it seemed simpler to understand
+- I went through multiple examples including with brackets until I understood how it worked then added created afunction to do the same thing
+- Created dictionary to turn operator token types into functions
+- Created a calculate function to get the tokens and actually calculate with them
+- Restructured it so only calculate() needs to be called, not calculate(shuntingYard(tokenise()))
