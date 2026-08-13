@@ -54,3 +54,8 @@
 - Created dictionary to turn operator token types into functions
 - Created a calculate function to get the tokens and actually calculate with them
 - Restructured it so only ```calculate()``` needs to be called, not ```calculate(shuntingYard(tokenise()))```
+- Calculator still needs functionality for percentages, unit conversion, trig and exponents and maybe vectors but I decoded to start on time
+- Researched the datetime library using [stack overflow](https://stackoverflow.com/questions/415511/how-do-i-get-the-current-time-in-python)
+- Added functions to get the current date and time and a stopwatch class that can track how much time has elapsed by subtracting current time from the time it was started
+- Added a ```pause()``` and ```resume()``` function to the stopwatch class
+- Added an alarm class that uses threads to stay on but allow scripts to do other things. It gives an invalid time message if duration is negative (would go to next day) and has cancel function and a function that is called when alarm goes off
