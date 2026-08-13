@@ -36,3 +36,5 @@
 - Filtered out filler words to have wikipedia give better responses
 - Google has age restrictions on google ai studio so can't use gemini and other models have the same so I'll leave the ai and explain sections for now
 - The search function still has errors when the actual wikipedia page has strange formatting since it only gets the first paragraph from the api so, if there is an enter, it will cut short
+- Learnt some html and css from claude and [w3 schools](https://www.w3schools.com/html/default.asp)
+- Got a basic design working and got a simple animation to play
