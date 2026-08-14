@@ -59,3 +59,11 @@
 - Added functions to get the current date and time and a stopwatch class that can track how much time has elapsed by subtracting current time from the time it was started
 - Added a ```pause()``` and ```resume()``` function to the stopwatch class
 - Added an alarm class that uses threads to stay on but allow scripts to do other things. It gives an invalid time message if duration is negative (would go to next day) and has cancel function and a function that is called when alarm goes off
+
+## Day 6
+- Retrained the neural network to just have 4 outputs since the search and explain will both be given to a llm
+- Added training scenarios for the date
+- Rewrote the neural network script to use a class and has it retrain itself if there is no preexisting weights and biases to load
+- Wrote a word recogniser that could get the time related sentence and decide if it was alarm, stopwatch or date/time related but I couldn't figure out how to check if it wasn't sure (if multiple categories had the same value)
+- Found the ```.count()``` function on [mimo.org](https://mimo.org/glossary/python/list-count)
+- Basically remade the same function to check whether the time function was asking for the date or the time and then connected it to the TTS and to VoiceAssistant.py

@@ -1,16 +1,15 @@
-import NeuralNetwork as nn
-import ast
 import TTS
 import Search
+from NeuralNetwork import NeuralNetwork
+import Time
 
-file = open("NeuralNetworkSetting.txt", "r")
-weights = ast.literal_eval(file.readline())
-biases = ast.literal_eval(file.readline())
-file.close()
+intentRecogniser = NeuralNetwork()
 
 sentence = input("Enter sentence: ")
-count = nn.sentenceToVector(sentence)
-answer = nn.forwardPass(count, weights, biases)
+count = intentRecogniser.sentenceToVector(sentence)
+
+answer = intentRecogniser.forwardPass(count)
+
 highest = 0
 for i in range(len(answer)):
     if answer[i] > highest:
@@ -20,11 +19,9 @@ match choice:
     case 0:
         TTS.speak("Weather")
     case 1:
-        TTS.speak("Time")
+        Time.categorise(sentence)
     case 2:
         TTS.speak("Calculate")
     case 3:
         summary = Search.search(sentence)
         TTS.speak(summary)
-    case 4:
-        TTS.speak("explain")
