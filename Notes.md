@@ -24,7 +24,7 @@
 ## Day 3
 - Rewrote training data code to make it generate data based on sentences instead of hardcoding it with help from [w3 schools](https://www.w3schools.com/python/default.asp)
 - Moved all training data code to be in NeuralNetwork.py
-- Created Search.py to get a summary from wikipedia but had issues with permission and got 403 errors
+- Created Search.py to get a summary from [Wikipedia](https://www.wikipedia.org/) but had issues with permission and got 403 errors
 - Changed headers to the Github repository and it worked
 - Wikipedia searching worked but it would occasionally get mixed up and give unrelated articles e.g. giving information on Roman Church when asked about Roman Empire. Can probably be fixed by filtering out words since it struggles when given a sentence instead of just a topic name
 
@@ -54,3 +54,19 @@
 - Created dictionary to turn operator token types into functions
 - Created a calculate function to get the tokens and actually calculate with them
 - Restructured it so only ```calculate()``` needs to be called, not ```calculate(shuntingYard(tokenise()))```
+- Calculator still needs functionality for percentages, unit conversion, trig and exponents and maybe vectors but I decoded to start on time
+- Researched the datetime library using [stack overflow](https://stackoverflow.com/questions/415511/how-do-i-get-the-current-time-in-python)
+- Added functions to get the current date and time and a stopwatch class that can track how much time has elapsed by subtracting current time from the time it was started
+- Added a ```pause()``` and ```resume()``` function to the stopwatch class
+- Added an alarm class that uses threads to stay on but allow scripts to do other things. It gives an invalid time message if duration is negative (would go to next day) and has cancel function and a function that is called when alarm goes off
+
+## Day 6
+- Retrained the neural network to just have 4 outputs since the search and explain will both be given to a llm
+- Added training scenarios for the date
+- Rewrote the neural network script to use a class and has it retrain itself if there is no preexisting weights and biases to load
+- Wrote a word recogniser that could get the time related sentence and decide if it was alarm, stopwatch or date/time related but I couldn't figure out how to check if it wasn't sure (if multiple categories had the same value)
+- Found the ```.count()``` function on [mimo.org](https://mimo.org/glossary/python/list-count)
+- Basically remade the same function to check whether the time function was asking for the date or the time and then connected it to the TTS and to VoiceAssistant.py
+- Completed alarm functionality and just need to create functions on what the alarms actually trigger which comes later
+- Made VoiceAssistant.py ask for an input forever
+- Added stopwatch functionality and completed all the time functions for now and connected them all directly to neural network using VoiceAssistant.py so now Wikipedia search, time and text to speech are all connected (calculate is still separate since I need to add a way to convert sentences into an equation)

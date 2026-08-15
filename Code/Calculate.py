@@ -1,5 +1,8 @@
 # Inputs will be from both written and spoken so may be given in words. word2number library will be used to give everything in an easier format
+# Needs to add %, unit conversion, trig, exponents
+# Maybe add vectors
 
+import TTS
 from enum import Enum
 
 class TokenType(Enum):
@@ -138,4 +141,5 @@ def calculate(input):
             b = numbers.pop()
             a = numbers.pop()
             numbers.append(operations[token.type](a, b))
+    TTS.speak(str(numbers[0]))
     return numbers[0]
