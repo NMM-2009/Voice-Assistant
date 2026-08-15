@@ -2,6 +2,7 @@ import TTS
 import Search
 from NeuralNetwork import NeuralNetwork
 import Time
+import Calculate
 
 stopWords = ["stop", "cancel", "shush", "no"]
 
@@ -28,7 +29,7 @@ while True:
         case 1:
             Time.categorise(sentence)
         case 2:
-            TTS.speak("Calculate")
+            Calculate.calculator(sentence)
         case 3:
             summary = Search.search(sentence)
             TTS.speak(summary)

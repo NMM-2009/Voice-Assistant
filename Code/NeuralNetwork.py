@@ -1,6 +1,7 @@
 import random
 import math
 import ast
+import TTS
 
 class NeuralNetwork():
     def __init__(self):
@@ -181,7 +182,9 @@ class NeuralNetwork():
             "what is the countdown at", [0, 1, 0, 0],
 
             "what is 9 plus 10", [0, 0, 1, 0],
-            "what is the sum of 3 and 4", [0, 0, 1, 0],
+            "how many metres in 21 kilometers", [0, 0, 1, 0],
+            "how many inches are in a foot", [0, 0, 1, 0],
+            "convert 10 seconds into minutes", [0, 0, 1, 0],
 
             "what is the oldest book in the world", [0, 0, 0, 1],
             "what is the tallest building in the world", [0, 0, 0, 1],
@@ -248,4 +251,4 @@ class NeuralNetwork():
         settingsFile.write("\n")
         settingsFile.close()
 
-        print("Done training")
+        TTS.speak("Done training")

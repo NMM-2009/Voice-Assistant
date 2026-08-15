@@ -70,3 +70,12 @@
 - Completed alarm functionality and just need to create functions on what the alarms actually trigger which comes later
 - Made VoiceAssistant.py ask for an input forever
 - Added stopwatch functionality and completed all the time functions for now and connected them all directly to neural network using VoiceAssistant.py so now Wikipedia search, time and text to speech are all connected (calculate is still separate since I need to add a way to convert sentences into an equation)
+
+## Day 7
+- Added basic trigonometric functions to calculator and logarithms
+- Added percentages which converts the last number into a decimal so "10% of 200" would need to become "10% * 200" before being given to calculator
+- Added a conversion system to convert units and more can be added by just adding them to the ```units``` dictionary
+- Learnt basics of word2number on [pypi.org](https://pypi.org/project/word2number/)
+- Added a function to convert sentences given to neural network into equations the calculator can tokenise and connected the calculate.py script to VoiceAssistant.py
+- Fixed some bugs including it not correctly adding operators to the equations since ```.index()``` just returns the first instance of the item and a couple logic errors
+- Now, VoiceAssistant.py is fully connected to Neuralnetwork.py, TTS.py, Time.py, Search.py and Calculate.py. The only functions left are the LLM and weather
