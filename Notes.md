@@ -79,3 +79,4 @@
 - Added a function to convert sentences given to neural network into equations the calculator can tokenise and connected the calculate.py script to VoiceAssistant.py
 - Fixed some bugs including it not correctly adding operators to the equations since ```.index()``` just returns the first instance of the item and a couple logic errors
 - Now, VoiceAssistant.py is fully connected to Neuralnetwork.py, TTS.py, Time.py, Search.py and Calculate.py. The only functions left are the LLM and weather
+- Added a State.py script which stores current info about everything that GUI.py will read from to update visuals
