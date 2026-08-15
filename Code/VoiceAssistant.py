@@ -3,25 +3,32 @@ import Search
 from NeuralNetwork import NeuralNetwork
 import Time
 
+stopWords = ["stop", "cancel", "shush", "no"]
+
 intentRecogniser = NeuralNetwork()
 
-sentence = input("Enter sentence: ")
-count = intentRecogniser.sentenceToVector(sentence)
+while True:
+    sentence = input("Enter sentence: ")
 
-answer = intentRecogniser.forwardPass(count)
+    if sentence.lower() in stopWords:
+        break
 
-highest = 0
-for i in range(len(answer)):
-    if answer[i] > highest:
-        highest = answer[i]
-        choice = i
-match choice:
-    case 0:
-        TTS.speak("Weather")
-    case 1:
-        Time.categorise(sentence)
-    case 2:
-        TTS.speak("Calculate")
-    case 3:
-        summary = Search.search(sentence)
-        TTS.speak(summary)
+    count = intentRecogniser.sentenceToVector(sentence)
+
+    answer = intentRecogniser.forwardPass(count)
+
+    highest = 0
+    for i in range(len(answer)):
+        if answer[i] > highest:
+            highest = answer[i]
+            choice = i
+    match choice:
+        case 0:
+            TTS.speak("Weather")
+        case 1:
+            Time.categorise(sentence)
+        case 2:
+            TTS.speak("Calculate")
+        case 3:
+            summary = Search.search(sentence)
+            TTS.speak(summary)

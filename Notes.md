@@ -24,7 +24,7 @@
 ## Day 3
 - Rewrote training data code to make it generate data based on sentences instead of hardcoding it with help from [w3 schools](https://www.w3schools.com/python/default.asp)
 - Moved all training data code to be in NeuralNetwork.py
-- Created Search.py to get a summary from wikipedia but had issues with permission and got 403 errors
+- Created Search.py to get a summary from [Wikipedia](https://www.wikipedia.org/) but had issues with permission and got 403 errors
 - Changed headers to the Github repository and it worked
 - Wikipedia searching worked but it would occasionally get mixed up and give unrelated articles e.g. giving information on Roman Church when asked about Roman Empire. Can probably be fixed by filtering out words since it struggles when given a sentence instead of just a topic name
 
@@ -67,3 +67,6 @@
 - Wrote a word recogniser that could get the time related sentence and decide if it was alarm, stopwatch or date/time related but I couldn't figure out how to check if it wasn't sure (if multiple categories had the same value)
 - Found the ```.count()``` function on [mimo.org](https://mimo.org/glossary/python/list-count)
 - Basically remade the same function to check whether the time function was asking for the date or the time and then connected it to the TTS and to VoiceAssistant.py
+- Completed alarm functionality and just need to create functions on what the alarms actually trigger which comes later
+- Made VoiceAssistant.py ask for an input forever
+- Added stopwatch functionality and completed all the time functions for now and connected them all directly to neural network using VoiceAssistant.py so now Wikipedia search, time and text to speech are all connected (calculate is still separate since I need to add a way to convert sentences into an equation)

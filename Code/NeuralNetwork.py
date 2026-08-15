@@ -136,6 +136,9 @@ class NeuralNetwork():
             "what day of the week is it", [0, 1, 0, 0],
             "what month is it", [0, 1, 0, 0],
             "what year is it", [0, 1, 0, 0],
+            "start a stopwatch", [0, 1, 0, 0],
+            "whats the time on the stopwatch", [0, 1, 0, 0],
+            "update the time on stopwatch 1", [0, 1, 0, 0],
 
             "calculate 15 times 8", [0, 0, 1, 0],
             "whats 20 percent of 80", [0, 0, 1, 0],
