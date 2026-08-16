@@ -327,6 +327,9 @@ def calculator(phrase):
 
 def phraseToEquation(phrase):
     phrase = phrase.lower()
+    symbols = ["+", "-", "*", "/", "(", ")", "^", "%"]
+    for s in symbols:
+        phrase = phrase.replace(s, f" {s} ")
     words = phrase.split()
     convertedWords = []
     for i in range(len(words)):
@@ -359,6 +362,13 @@ def phraseToEquation(phrase):
                     currentFirstDigit = None
                     length = 0
                     currentNumber = []
+    if currentFirstDigit:
+        words[int(currentFirstDigit)] = " ".join(currentNumber)
+        for j in range(length - 1):
+            words[int(currentFirstDigit) + j + 1] = ""
+        currentFirstDigit = None
+        length = 0
+        currentNumber = []
 
     for word in words:
         try:

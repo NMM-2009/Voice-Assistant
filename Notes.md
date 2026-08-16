@@ -80,3 +80,11 @@
 - Fixed some bugs including it not correctly adding operators to the equations since ```.index()``` just returns the first instance of the item and a couple logic errors
 - Now, VoiceAssistant.py is fully connected to Neuralnetwork.py, TTS.py, Time.py, Search.py and Calculate.py. The only functions left are the LLM and weather
 - Added a State.py script which stores current info about everything that GUI.py will read from to update visuals
+- Created a screen with J.A.R.V.I.S in the centre and 3 concentric rings around it
+
+## Day 8
+- Added moving arcs on the circles using ```time.monotonic()``` and added a side panel and a button to open a panel to manually enter an input
+- Connected the manual enter to the rest of the scripts so that it would actually work by using threading so that the GUI.py script could still run
+- Created a Theme.json file to customise the pygame_gui elements
+- Made the arcs move faster when it was searching something but it didn't work and just had the arcs jump to places. It was because threads can't all get the current time so it would just make the entire movement at once. I changed the arc movement script to use dt instead and it worked
+- Added ticks going around the circles and had them get longer and brighter in a wavelike pattern. The wave changes direction and moves faster when it is talking
