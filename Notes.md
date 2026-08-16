@@ -88,3 +88,5 @@
 - Created a Theme.json file to customise the pygame_gui elements
 - Made the arcs move faster when it was searching something but it didn't work and just had the arcs jump to places. It was because threads can't all get the current time so it would just make the entire movement at once. I changed the arc movement script to use dt instead and it worked
 - Added ticks going around the circles and had them get longer and brighter in a wavelike pattern. The wave changes direction and moves faster when it is talking
+- Made all arcs, circles and ticks turn to the warning colour when an error occurs
+- Created a function to allow for notifications

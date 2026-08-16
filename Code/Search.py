@@ -3,6 +3,7 @@ from State import state
 
 def search(question):
     state.currentState = "Searching"
+    state.justChanged = True
     fillerWords = [
         "who", "what", "when", "where", "why", "how", "is", "are", "was",
         "were", "do", "does", "did", "can", "could", "will", "would", 
@@ -31,4 +32,5 @@ def search(question):
     
     summary = page["extract"]
     state.currentState = "Idle"
+    state.justChanged = True
     return summary

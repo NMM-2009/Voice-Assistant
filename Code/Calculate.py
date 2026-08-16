@@ -298,6 +298,7 @@ searchPattern = r"(\d+)\s*(" + search + ")"
 
 def calculator(phrase):
     state.currentState = "Calculating"
+    state.justChanged = True
     match = re.search(searchPattern, phrase)
     if match:
         amount = float(match.group(1))
@@ -314,16 +315,23 @@ def calculator(phrase):
                 value = round(value, 3)
                 TTS.speak(str(value) + " " + unitTo + "s")
             else:
+                state.currentState = "Error"
+                state.justChanged = True
                 TTS.speak("Can't convert from " + unitFrom + "s to " + unitTo + "s")
         else:
+            state.currentState = "Error"
+            state.justChanged = True
             TTS.speak("Unsure what unit to convert to")
     else:
         equation = phraseToEquation(phrase)
         if equation:
             calculate(equation)
         else:
+            state.currentState = "Error"
+            state.justChanged = True
             TTS.speak("Unsure what to do") # Hand to LLM
     state.currentState = "Idle"
+    state.justChanged = True
 
 def phraseToEquation(phrase):
     phrase = phrase.lower()

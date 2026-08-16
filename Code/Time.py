@@ -72,7 +72,11 @@ class Alarm():
             self.thread = threading.Timer(self.duration, self.alarm)
             self.thread.start()
         else:
+            state.currentState = "Error"
+            state.justChanged = True
             TTS.speak("Invalid time")
+            state.currentState = "Idle"
+            state.justChanged = True
 
     def alarm(self):
         delete(self, state.activeAlarms)
@@ -85,7 +89,11 @@ def delete(alarm, alarms):
     if alarm in alarms:
         alarms.remove(alarm)
     else:
+        state.currentState = "Error"
+        state.justChanged = True
         TTS.speak("That timer doesn't exist")
+        state.currentState = "Idle"
+        state.justChanged = True
 
 categoryWords = {
     # word : (weight, category)
@@ -127,7 +135,11 @@ def categorise(phrase):
             highest = i
 
     if categories.count(highest) > 1:
+        state.currentState = "Error"
+        state.justChanged = True
         print("Unsure") # Will connect to the LLM
+        state.currentState = "Idle"
+        state.justChanged = True
     match categories.index(highest):
         case 0:
             getAlarmFunction(phrase, state.activeAlarms)
@@ -166,7 +178,11 @@ def getTimeFunction(phrase):
            highest = i
 
     if categories.count(highest) > 1:
+        state.currentState = "Error"
+        state.justChanged = True
         print("Unsure") # Will connect to the LLM
+        state.currentState = "Idle"
+        state.justChanged = True
 
     match categories.index(highest):
         case 0:
@@ -203,7 +219,11 @@ def getAlarmFunction(phrase, alarms):
            highest = i
 
     if categories.count(highest) > 1:
+        state.currentState = "Error"
+        state.justChanged = True
         TTS.speak("Unsure of your request")
+        state.currentState = "Idle"
+        state.justChanged = True
 
     alarmTime = getAlarmTime(phrase)
 
@@ -239,7 +259,11 @@ def getAlarmFunction(phrase, alarms):
                 alarms.append(Alarm(endTime))
                 TTS.speak("Alarm started")
             else:
+                state.currentState = "Error"
+                state.justChanged = True
                 TTS.speak("No valid time")
+                state.currentState = "Idle"
+                state.justChanged = True
         case 1:
             # Check if time given
             if re.search(r"\d{1,2}:\d{2}:\d{2}", alarmTime):
@@ -258,7 +282,11 @@ def getAlarmFunction(phrase, alarms):
                         delete(alarm, state.activeAlarms)
                         TTS.speak("Alarm deleted")
             else:
+                state.currentState = "Error"
+                state.justChanged = True
                 TTS.speak("No valid time")
+                state.currentState = "Idle"
+                state.justChanged = True
 
 def getAlarmTime(phrase):
     # Check for HH am/pm or HH:MM am/pm or HH:MM:SS am/pm
@@ -305,7 +333,11 @@ def getAlarmTime(phrase):
         elif unit == "hour" or unit == "hours":
             return str(int(match.group(1)) * 3600)
         else:
+            state.currentState = "Error"
+            state.justChanged = True
             TTS.speak("Couldn't recognise unit")
+            state.currentState = "Idle"
+            state.justChanged = True
             return "Error"
     return "Error"
 
@@ -350,7 +382,11 @@ def getStopwatchFunction(phrase, stopwatches):
            highest = i
 
     if categories.count(highest) > 1:
+        state.currentState = "Error"
+        state.justChanged = True
         TTS.speak("Unsure of your request")
+        state.currentState = "Idle"
+        state.justChanged = True
         return 0
 
     match categories.index(highest):
@@ -388,5 +424,9 @@ def whichStopwatch(phrase):
     if match:
         return match.group()
     else:
+        state.currentState = "Error"
+        state.justChanged = True
         TTS.speak("Unsure which timer")
+        state.currentState = "Idle"
+        state.justChanged = True
         return None

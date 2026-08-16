@@ -6,6 +6,9 @@ from State import state
 import VoiceAssistant
 import Calculate
 
+# Settings variables (not including colours)
+holdTime = 1
+
 dt = 0
 
 width, height = 1500, 1000
@@ -16,6 +19,7 @@ secondaryColour = (10, 80, 130) #0A5082
 highlightColour = (120, 240, 255) #78F0FF
 textColour = (200, 235, 255) #C8EBFF
 warningColour = (255, 170, 60) #FFAA3C
+secondaryWarningColour = (153, 102, 36) #994823
 
 pygame.init()
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
@@ -49,7 +53,13 @@ class Arc():
             mult = 0.05
 
         self.startPos += self.speed * dt * mult
-        pygame.draw.arc(screen, primaryColour, pygame.Rect(rect), self.startPos, self.startPos + self.length, 4)
+
+        if state.currentState == "Error":
+            self.colour = warningColour
+        else:
+            self.colour = primaryColour
+
+        pygame.draw.arc(screen, self.colour, pygame.Rect(rect), self.startPos, self.startPos + self.length, 4)
 
 class Tick():
     def __init__(self, angle):
@@ -64,7 +74,12 @@ class Tick():
 
         self.length = 10 + self.intensity * 10
 
-        self.colour = tuple(int(a + (b - a) * self.intensity) for a, b in zip(secondaryColour, primaryColour))
+        if state.currentState == "Error":
+            self.colour = tuple(int(a + (b - a) * self.intensity) for a, b in zip(secondaryWarningColour, warningColour))
+        elif state.currentState == "Calculating":
+            self.colour = tuple(int(a + (b - a) * self.intensity) for a, b in zip(secondaryColour, warningColour))
+        else:
+            self.colour = tuple(int(a + (b - a) * self.intensity) for a, b in zip(secondaryColour, primaryColour))
 
         self.sx, self.sy = math.cos(self.angle) * 5 * height / 14, math.sin(self.angle) * 5 * height / 14
         self.start = (width / 2 + self.sx, height / 2 + self.sy)
@@ -104,7 +119,16 @@ manualCalculatePanel = gui.elements.UIPanel(relative_rect = pygame.Rect((width /
 manualCalculateText = gui.elements.UILabel(relative_rect = pygame.Rect((0, 5, width / 9, height / 20)), text = "Calculator", manager = manager, container = manualCalculatePanel, object_id = "#text", anchors = {"centerx" : "centerx"})
 manualCalculate = gui.elements.UITextEntryLine(relative_rect = pygame.Rect((0, 0, width / 9, height / 20)), manager = manager, container = manualCalculatePanel, object_id = "#text_entry", anchors = {"centerx" : "centerx", "centery" : "centery"})
 
+notificationPanel = gui.elements.UIPanel(relative_rect = pygame.Rect((-(width / 5), 10, width / 5, height / 10)), manager = manager, object_id = "#panel", anchors = {"right" : "right", "top" : "top"})
+notificationText = gui.elements.UILabel(relative_rect = pygame.Rect((0, 0, width / 5, height / 10)), text = "", manager = manager, container = notificationPanel, object_id = "#text")
+notificationState = "hidden"
+progress = 0
+time = 0
+
 def updateGUI():
+    global progress
+    global time
+    global notificationState
     global waveSpeed
     global wavePos
 
@@ -133,8 +157,16 @@ def updateGUI():
         manualCalculatePanel.set_relative_position((width / 15 + 5, 5))
 
     manualInputPanel.set_relative_position((width / 15 + 5, 5))
+    manualInputPanel.set_dimensions((width / 6, height / 5))
+    manualCalculatePanel.set_dimensions((width / 6, height / 5))
+    manualInput.set_dimensions((width / 9, height / 20))
+    manualCalculate.set_dimensions((width / 9, height / 20))
+    manualInputText.set_dimensions((width / 9, height / 20))
+    manualCalculateText.set_dimensions((width / 9, height / 20))
+
 
     manualCalculateButton.set_dimensions((width / 20, width / 20))
+    manualCalculateButton.set_relative_position((0, width / 20 + 20, width / 20, width / 20))
     if calculateToggle:
         manualCalculateButton.set_text("-")
         manualCalculatePanel.show()
@@ -144,10 +176,41 @@ def updateGUI():
 
     gap = height // 12
     for radius in range(2, 5, 1):
-        pygame.draw.circle(screen, secondaryColour, (width // 2, height // 2), radius * gap, 2)
+        if state.currentState == "Error":
+            colour = secondaryWarningColour
+        else:
+            colour = secondaryColour
+        pygame.draw.circle(screen, colour, (width // 2, height // 2), radius * gap, 2)
 
     for arc in arcs:
         arc.update()
+
+    if notificationState == "hidden":
+        notificationPanel.hide()
+        notificationPanel.set_relative_position((-10, 10))
+        progress = 0
+    elif notificationState == "entering":
+        notificationPanel.show()
+        notificationPanel.set_relative_position((-10 + (-(width / 5) + 10) * (1 - (1 - progress) ** 6), 10))
+        progress += dt 
+        if progress >= 1:
+            notificationState = "holding"
+            progress = 0
+    elif notificationState == "holding":
+        time += dt
+        if time >= holdTime:
+            notificationState = "hidden"
+            time = 0
+
+    if state.justChanged:
+        if state.currentState == "Searching":
+            notification("Searching...")
+        state.justChanged = False
+
+def notification(text):
+    global notificationState
+    notificationText.set_text(text)
+    notificationState = "entering"
 
 def handleEvent(event):
     if event.type == gui.UI_BUTTON_PRESSED:
