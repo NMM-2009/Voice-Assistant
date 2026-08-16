@@ -4,20 +4,12 @@ from NeuralNetwork import NeuralNetwork
 import Time
 import Calculate
 
-stopWords = ["stop", "cancel", "shush", "no"]
 
-intentRecogniser = NeuralNetwork()
-
-while True:
-    sentence = input("Enter sentence: ")
-
-    if sentence.lower() in stopWords:
-        break
+def process(sentence):
+    intentRecogniser = NeuralNetwork()
 
     count = intentRecogniser.sentenceToVector(sentence)
-
     answer = intentRecogniser.forwardPass(count)
-
     highest = 0
     for i in range(len(answer)):
         if answer[i] > highest:

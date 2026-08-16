@@ -7,6 +7,7 @@ import re
 import TTS
 from word2number import w2n
 from enum import Enum
+from State import state
 
 # Logarithms written as "log(value base)"
 
@@ -296,6 +297,7 @@ search = search[:-1]
 searchPattern = r"(\d+)\s*(" + search + ")"
 
 def calculator(phrase):
+    state.currentState = "Calculating"
     match = re.search(searchPattern, phrase)
     if match:
         amount = float(match.group(1))
@@ -321,9 +323,13 @@ def calculator(phrase):
             calculate(equation)
         else:
             TTS.speak("Unsure what to do") # Hand to LLM
+    state.currentState = "Idle"
 
 def phraseToEquation(phrase):
     phrase = phrase.lower()
+    symbols = ["+", "-", "*", "/", "(", ")", "^", "%"]
+    for s in symbols:
+        phrase = phrase.replace(s, f" {s} ")
     words = phrase.split()
     convertedWords = []
     for i in range(len(words)):
@@ -356,9 +362,13 @@ def phraseToEquation(phrase):
                     currentFirstDigit = None
                     length = 0
                     currentNumber = []
-
-
-
+    if currentFirstDigit:
+        words[int(currentFirstDigit)] = " ".join(currentNumber)
+        for j in range(length - 1):
+            words[int(currentFirstDigit) + j + 1] = ""
+        currentFirstDigit = None
+        length = 0
+        currentNumber = []
 
     for word in words:
         try:

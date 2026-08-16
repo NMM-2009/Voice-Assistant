@@ -5,6 +5,7 @@ import time
 import threading
 import TTS
 import re
+from State import state
 
 def currentTime():
     now = datetime.datetime.now()
@@ -74,13 +75,13 @@ class Alarm():
             TTS.speak("Invalid time")
 
     def alarm(self):
-        delete(self)
+        delete(self, state.activeAlarms)
         TTS.speak("Alarm up")
 
     def cancel(self):
         self.thread.cancel()
 
-def delete(alarm):
+def delete(alarm, alarms):
     if alarm in alarms:
         alarms.remove(alarm)
     else:
@@ -129,9 +130,9 @@ def categorise(phrase):
         print("Unsure") # Will connect to the LLM
     match categories.index(highest):
         case 0:
-            getAlarmFunction(phrase)
+            getAlarmFunction(phrase, state.activeAlarms)
         case 1:
-            getStopwatchFunction(phrase)
+            getStopwatchFunction(phrase, state.activeTimers)
         case 2:
             getTimeFunction(phrase)
 
@@ -185,9 +186,7 @@ alarmFunctionWords = {
     "end" : (2, 1),
 }
 
-alarms = []
-
-def getAlarmFunction(phrase):
+def getAlarmFunction(phrase, alarms):
     words = phrase.split()
     categories = [0, 0]
 
@@ -248,7 +247,7 @@ def getAlarmFunction(phrase):
                 for alarm in alarms:
                     if alarm.stopTime == alarmID:
                         alarm.cancel()
-                        delete(alarm)
+                        delete(alarm, state.activeAlarms)
                         TTS.speak("Alarm deleted")
             # Check if duration given
             elif re.search(r"\d+", alarmTime):
@@ -256,7 +255,7 @@ def getAlarmFunction(phrase):
                 for alarm in alarms:
                     if str(int(alarm.duration)) == alarmTime:
                         alarm.cancel()
-                        delete(alarm)
+                        delete(alarm, state.activeAlarms)
                         TTS.speak("Alarm deleted")
             else:
                 TTS.speak("No valid time")
@@ -334,9 +333,7 @@ stopwatchFunctionWords = {
     "current" : (2, 4),
 }
 
-stopwatches = []
-
-def getStopwatchFunction(phrase):
+def getStopwatchFunction(phrase, stopwatches):
     words = phrase.split()
     categories = [0, 0, 0, 0, 0]
 

@@ -1,6 +1,8 @@
 import requests
+from State import state
 
 def search(question):
+    state.currentState = "Searching"
     fillerWords = [
         "who", "what", "when", "where", "why", "how", "is", "are", "was",
         "were", "do", "does", "did", "can", "could", "will", "would", 
@@ -28,4 +30,5 @@ def search(question):
     page = temp.json()
     
     summary = page["extract"]
+    state.currentState = "Idle"
     return summary
