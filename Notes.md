@@ -89,4 +89,13 @@
 - Made the arcs move faster when it was searching something but it didn't work and just had the arcs jump to places. It was because threads can't all get the current time so it would just make the entire movement at once. I changed the arc movement script to use dt instead and it worked
 - Added ticks going around the circles and had them get longer and brighter in a wavelike pattern. The wave changes direction and moves faster when it is talking
 - Made all arcs, circles and ticks turn to the warning colour when an error occurs
-- Created a function to allow for notifications
+- Created a function to allow for notifications and called it everytime it starts searching something
+- Added a section for timers that shows all current timers and what number they are after Claude showed what a UIScrollingContainer was. It also explained that each UI element had a ```.kill()``` function that needed to be called to prevent UI elements staying after their timer had been deleted or changed
+
+## Day 9
+- Added a button to the timers panel to start a new timer without having to type in an input
+- Added a button to each timer entry to delete that timer
+- Added a play/pause button to each timer entry and got it working after a while of debugging. The unicode pause symbol isn't supported by the font I chose so I had to spearte it into 2 line characters
+- Added a button to open an alarm panel and had the panel display all active alarms and the time they would go off
+- Added a delete button to the alarms
+- Added a minimum window size so that GUI doesn't format weirdly when window is too small

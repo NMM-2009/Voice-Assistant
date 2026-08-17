@@ -7,7 +7,9 @@ import VoiceAssistant
 import Calculate
 
 # Settings variables (not including colours)
-holdTime = 1
+holdTime = 1 # Time notifications stay up
+minWidth = 1300
+minHeight = 900
 
 dt = 0
 
@@ -119,16 +121,76 @@ manualCalculatePanel = gui.elements.UIPanel(relative_rect = pygame.Rect((width /
 manualCalculateText = gui.elements.UILabel(relative_rect = pygame.Rect((0, 5, width / 9, height / 20)), text = "Calculator", manager = manager, container = manualCalculatePanel, object_id = "#text", anchors = {"centerx" : "centerx"})
 manualCalculate = gui.elements.UITextEntryLine(relative_rect = pygame.Rect((0, 0, width / 9, height / 20)), manager = manager, container = manualCalculatePanel, object_id = "#text_entry", anchors = {"centerx" : "centerx", "centery" : "centery"})
 
+timersButton = gui.elements.UIButton(relative_rect = pygame.Rect((0, width / 10 + 30, width / 20, width / 20)), text = "+", manager = manager, container = mainPanel, anchors = {"centerx" : "centerx"}, object_id = "#button")
+timerToggle = False
+timerRows = []
+lastTimerLength = 0
+
+timerPanel = gui.elements.UIPanel(relative_rect = pygame.Rect((width / 15 + 5, 5, width / 6, height / 4)), manager = manager, object_id = "#panel")
+timerLabel = gui.elements.UILabel(relative_rect = pygame.Rect((0, 5, width / 9, height / 20)), text = "Timers", manager = manager, container = timerPanel, object_id = "#text", anchors = {"centerx" : "centerx"})
+addTimerButton = gui.elements.UIButton(relative_rect = pygame.Rect((width / 18, 5, width / 36, height / 20)), text = "+", manager = manager, container = timerPanel, object_id = "#button", anchors = {"centerx" : "centerx"})
+timerContainer = gui.elements.UIScrollingContainer(relative_rect = pygame.Rect((0, height / 20 + 10, width / 6 - 4, height / 5 - 10)), manager = manager, container = timerPanel)
+
+alarmButton = gui.elements.UIButton(relative_rect = pygame.Rect((0, 3 * width / 20 + 40, width / 20, width / 20)), text = "+", manager = manager, container = mainPanel, anchors = {"centerx" : "centerx"}, object_id = "#button")
+alarmToggle = False
+alarmRows = []
+lastAlarmLength = 0
+
+alarmPanel = gui.elements.UIPanel(relative_rect = pygame.Rect((width / 15 + 5, 5, width / 6, height / 4)), manager = manager, object_id = "#panel")
+alarmLabel = gui.elements.UILabel(relative_rect = pygame.Rect((0, 5, width / 9, height / 20)), text = "Alarms", manager = manager, container = alarmPanel, object_id = "#text", anchors = {"centerx" : "centerx"})
+alarmContainer = gui.elements.UIScrollingContainer(relative_rect = pygame.Rect((0, height / 20 + 10, width / 6 - 4, height / 5 - 10)), manager = manager, container = alarmPanel)
+
 notificationPanel = gui.elements.UIPanel(relative_rect = pygame.Rect((-(width / 5), 10, width / 5, height / 10)), manager = manager, object_id = "#panel", anchors = {"right" : "right", "top" : "top"})
 notificationText = gui.elements.UILabel(relative_rect = pygame.Rect((0, 0, width / 5, height / 10)), text = "", manager = manager, container = notificationPanel, object_id = "#text")
 notificationState = "hidden"
 progress = 0
 time = 0
 
+def timer():
+    global timerRows
+    if timerRows != []:
+        for position, item in enumerate(timerRows):
+            for i in range(len(timerRows[position])):
+                try:
+                    timerRows[position][i].kill()
+                except:
+                    continue
+    timerRows = []
+    h = 0
+    for item in state.activeTimers:
+        timerRows.append([gui.elements.UIPanel(relative_rect = ((2, h, width / 7, height / 20)), manager = manager, container = timerContainer, anchors = {"centerx" : "centerx"}, object_id = "#inner_panel")])
+        timerRows[state.activeTimers.index(item)].append(gui.elements.UILabel(relative_rect = pygame.Rect((0, 0, width / 49, height / 20)), text = str(state.activeTimers.index(item)), manager = manager, container = timerRows[state.activeTimers.index(item)][0], object_id = "#text", anchors = {"centery" : "centery"}))
+        timerRows[state.activeTimers.index(item)].append(gui.elements.UILabel(relative_rect = pygame.Rect((width / 49, 0, 4 * width / 49, height / 20)), text = str(item.update()) + "s", manager = manager, container = timerRows[state.activeTimers.index(item)][0], object_id = "#text", anchors = {"centery" : "centery"}))
+        timerRows[state.activeTimers.index(item)].append(gui.elements.UIButton(relative_rect = pygame.Rect((5 * width / 49 - 10, 0, width / 49, height / 25)), text = str(chr(0x2759)) + str(chr(0x2759)), manager = manager, container = timerRows[state.activeTimers.index(item)][0], object_id = "#button", anchors = {"centery" : "centery"}))
+        timerRows[state.activeTimers.index(item)].append(gui.elements.UIButton(relative_rect = pygame.Rect((6 * width / 49 - 10, 0, width / 49, height / 25)), text = "X", manager = manager, container = timerRows[state.activeTimers.index(item)][0], object_id = "#button", anchors = {"centery" : "centery"}))
+        h += height / 20 + 5 
+    timerContainer.set_scrollable_area_dimensions((width / 7, h))
+
+def alarm():
+    global alarmRows
+    if alarmRows != []:
+        for position, item in enumerate(alarmRows):
+            for i in range(len(alarmRows[position])):
+                try:
+                    alarmRows[position][i].kill()
+                except:
+                    continue
+    alarmRows = []
+    h = 0
+    for item in state.activeAlarms:
+        alarmRows.append([gui.elements.UIPanel(relative_rect = pygame.Rect((2, h, width / 7, height / 20)), manager = manager, container = alarmContainer, anchors = {"centerx" : "centerx"}, object_id = "#inner_panel")])
+        alarmRows[state.activeAlarms.index(item)].append(gui.elements.UILabel(relative_rect = pygame.Rect((0, 0, width / 49, height / 20)), text = str(state.activeAlarms.index(item)), manager = manager, container = alarmRows[state.activeAlarms.index(item)][0], object_id = "#text", anchors = {"centery" : "centery"}))
+        alarmRows[state.activeAlarms.index(item)].append(gui.elements.UILabel(relative_rect = pygame.Rect((width / 49, 0, 4 * width / 49, height / 20)), text = str(state.activeAlarms[state.activeAlarms.index(item)].stopTime), manager = manager, container = alarmRows[state.activeAlarms.index(item)][0], object_id = "#text", anchors = {"centery" : "centery"}))
+        alarmRows[state.activeAlarms.index(item)].append(gui.elements.UIButton(relative_rect = pygame.Rect((6 * width / 49 - 10, 0, width / 49, height / 25)), text = "X", manager = manager, container = alarmRows[state.activeAlarms.index(item)][0], object_id = "#button", anchors = {"centery" : "centery"}))
+        h += height / 20 + 5
+    alarmContainer.set_scrollable_area_dimensions((width / 7, h))
+
 def updateGUI():
     global progress
     global time
     global notificationState
+    global lastTimerLength
+    global lastAlarmLength
     global waveSpeed
     global wavePos
 
@@ -146,6 +208,7 @@ def updateGUI():
     mainLabel.set_dimensions((width / 4, height / 8))
     mainPanel.set_dimensions((width / 15, height + 20))
 
+    # Manual input button
     manualInputButton.set_dimensions((width / 20, width / 20))
     if manualToggle:
         manualInputButton.set_text("-")
@@ -157,22 +220,72 @@ def updateGUI():
         manualCalculatePanel.set_relative_position((width / 15 + 5, 5))
 
     manualInputPanel.set_relative_position((width / 15 + 5, 5))
+
     manualInputPanel.set_dimensions((width / 6, height / 5))
     manualCalculatePanel.set_dimensions((width / 6, height / 5))
+    timerPanel.set_dimensions((width / 6, height / 4))
+    alarmPanel.set_dimensions((width / 6, height / 4))
+
     manualInput.set_dimensions((width / 9, height / 20))
     manualCalculate.set_dimensions((width / 9, height / 20))
+    addTimerButton.set_dimensions((width / 36, height / 20))
+    addTimerButton.set_relative_position((width / 18, 5, width / 36))
+
     manualInputText.set_dimensions((width / 9, height / 20))
     manualCalculateText.set_dimensions((width / 9, height / 20))
+    timerLabel.set_dimensions((width / 9, height / 20))
+    alarmLabel.set_dimensions((width / 9, height / 20))
 
+    timerContainer.set_relative_position((0, height / 20 + 10))
+    alarmContainer.set_relative_position((0, height / 20 + 10))
 
+    # Manual calculate button
     manualCalculateButton.set_dimensions((width / 20, width / 20))
-    manualCalculateButton.set_relative_position((0, width / 20 + 20, width / 20, width / 20))
+    manualCalculateButton.set_relative_position((0, width / 20 + 20))
     if calculateToggle:
         manualCalculateButton.set_text("-")
         manualCalculatePanel.show()
     else:
         manualCalculateButton.set_text("+")
         manualCalculatePanel.hide()
+
+    # Timer button
+    timersButton.set_dimensions((width / 20, width / 20))
+    timersButton.set_relative_position((0, width / 10 + 30))
+    if timerToggle:
+        timersButton.set_text("-")
+        timerPanel.show()
+    else:
+        timersButton.set_text("+")
+        timerPanel.hide()
+    if manualToggle and calculateToggle:
+        timerPanel.set_relative_position((width / 15 + 5, 2 * height / 5 + 15))
+    elif manualToggle or calculateToggle:
+        timerPanel.set_relative_position((width / 15 + 5, height / 5 + 10))
+    else:
+        timerPanel.set_relative_position((width / 15 + 5, 5))
+
+    # Alarm button
+    alarmButton.set_dimensions((width / 20, width / 20))
+    alarmButton.set_relative_position((0, 3 * width / 20 + 40))
+    if alarmToggle:
+        alarmButton.set_text("-")
+        alarmPanel.show()
+    else:
+        alarmButton.set_text("+")
+        alarmPanel.hide()
+    if manualToggle and calculateToggle and timerToggle:
+        alarmPanel.set_relative_position(((width / 15 + 5, 13 * height / 20 + 20)))
+    elif timerToggle and (manualToggle or calculateToggle):
+        alarmPanel.set_relative_position(((width / 15 + 5, 9 * height / 20 + 15)))
+    elif timerToggle:
+        alarmPanel.set_relative_position(((width / 15 + 5, height / 4 + 10)))
+    elif manualToggle and calculateToggle:
+        alarmPanel.set_relative_position(((width / 15 + 5, 2 * height / 5 + 15)))
+    elif manualToggle or calculateToggle:
+        alarmPanel.set_relative_position(((width / 15 + 5, height / 5 + 10)))
+    else:
+        alarmPanel.set_relative_position(((width / 15 + 5, 5)))
 
     gap = height // 12
     for radius in range(2, 5, 1):
@@ -207,6 +320,22 @@ def updateGUI():
             notification("Searching...")
         state.justChanged = False
 
+    if lastTimerLength != len(state.activeTimers):
+        timer()
+        lastTimerLength = len(state.activeTimers)
+    for index, item in enumerate(timerRows):
+        timerRows[index][2].set_text(str(state.activeTimers[index].update()) + "s")
+
+    if lastAlarmLength != len(state.activeAlarms):
+        alarm()
+        lastAlarmLength = len(state.activeAlarms)
+
+    for item in timerRows:
+        if state.activeTimers[int(timerRows[timerRows.index(item)][1].text)].paused:
+            timerRows[timerRows.index(item)][3].set_text(str(chr(0x25B6)))
+        else:
+            timerRows[timerRows.index(item)][3].set_text(str(chr(0x2759)) + str(chr(0x2759)))
+
 def notification(text):
     global notificationState
     notificationText.set_text(text)
@@ -214,12 +343,38 @@ def notification(text):
 
 def handleEvent(event):
     if event.type == gui.UI_BUTTON_PRESSED:
+        for item in timerRows:
+            if event.ui_element == timerRows[timerRows.index(item)][4]:
+                thread = threading.Thread(target = VoiceAssistant.process, args = ("delete timer " + str(timerRows[timerRows.index(item)][1].text),))
+                thread.start()
+            elif event.ui_element == timerRows[timerRows.index(item)][3]:
+                if not state.activeTimers[int(timerRows[timerRows.index(item)][1].text)].paused:
+                    thread = threading.Thread(target = VoiceAssistant.process, args = ("pause timer " + str(timerRows[timerRows.index(item)][1].text),))
+                    thread.start()
+                else:
+                    thread = threading.Thread(target = VoiceAssistant.process, args = ("resume timer " + str(timerRows[timerRows.index(item)][1].text),))
+                    thread.start()
+        for item in alarmRows:
+            if event.ui_element == alarmRows[alarmRows.index(item)][3]:
+                thread = threading.Thread(target = VoiceAssistant.process, args = ("delete alarm for " + str(alarmRows[alarmRows.index(item)][2].text),))
+                thread.start()
+        
         if event.ui_element == manualInputButton:
             global manualToggle
             manualToggle = not manualToggle
         elif event.ui_element == manualCalculateButton:
             global calculateToggle
             calculateToggle = not calculateToggle
+        elif event.ui_element == timersButton:
+            global timerToggle
+            timerToggle = not timerToggle
+        elif event.ui_element == alarmButton:
+            global alarmToggle
+            alarmToggle = not alarmToggle
+        elif event.ui_element == addTimerButton:
+            thread = threading.Thread(target = VoiceAssistant.process, args = ("Start a timer",))
+            thread.start()
+
     elif event.type == gui.UI_TEXT_ENTRY_FINISHED:
         if event.ui_element == manualInput:
             text = event.text
@@ -238,8 +393,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.VIDEORESIZE:
-            screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-            width, height = screen.get_width(), screen.get_height()
+            width = max(event.w, minWidth)
+            height = max(event.h, minHeight)
+            screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
             manager.set_window_resolution((width, height))
         else:
             handleEvent(event)
