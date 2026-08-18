@@ -3,6 +3,7 @@ import Search
 from NeuralNetwork import NeuralNetwork
 import Time
 import Calculate
+import Weather
 
 
 def process(sentence):
@@ -17,7 +18,7 @@ def process(sentence):
             choice = i
     match choice:
         case 0:
-            TTS.speak("Weather")
+            Weather.getWeather(sentence)
         case 1:
             Time.categorise(sentence)
         case 2:

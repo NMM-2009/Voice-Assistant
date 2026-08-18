@@ -78,7 +78,7 @@ class Tick():
 
         if state.currentState == "Error":
             self.colour = tuple(int(a + (b - a) * self.intensity) for a, b in zip(secondaryWarningColour, warningColour))
-        elif state.currentState == "Calculating":
+        elif state.currentState == "Calculating" or state.currentState == "Thinking":
             self.colour = tuple(int(a + (b - a) * self.intensity) for a, b in zip(secondaryColour, warningColour))
         else:
             self.colour = tuple(int(a + (b - a) * self.intensity) for a, b in zip(secondaryColour, primaryColour))

@@ -99,3 +99,8 @@
 - Added a button to open an alarm panel and had the panel display all active alarms and the time they would go off
 - Added a delete button to the alarms
 - Added a minimum window size so that GUI doesn't format weirdly when window is too small
+- Created a Weather script that used open-meteo api to gt weather data from a place and date. Got it to use a geocoding api to convert a city name into coordinates then gave that to the api to get weather. It returns the lowest temperature, highest temperature and weather conditions. If the date given is the current date, it also gives the current temperature
+
+## Day 10
+- Finished off Weather.py including getting the date and time from the input phrase and using that to get data about the weather
+- Tried to start speech to text (STT) and used sounddevice to convert audio into a numpy vector. I tried to use faster-whisper to then convert that vector into words but my computer is too old so it wouldn't install properly and after trying for a while, I decided to leave it and to use a different library such as vosk
