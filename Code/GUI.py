@@ -5,6 +5,7 @@ import pygame_gui as gui
 from State import state
 import VoiceAssistant
 import Calculate
+import STT
 
 # Settings variables (not including colours)
 holdTime = 1 # Time notifications stay up
@@ -146,6 +147,8 @@ notificationState = "hidden"
 progress = 0
 time = 0
 
+listenButton = gui.elements.UIButton(relative_rect = pygame.Rect((0, 8 * height / 9, width / 3, height / 12)), text = "Listen", manager = manager, object_id = "#button", anchors = {"centerx" : "centerx"})
+
 def timer():
     global timerRows
     if timerRows != []:
@@ -238,6 +241,9 @@ def updateGUI():
 
     timerContainer.set_relative_position((0, height / 20 + 10))
     alarmContainer.set_relative_position((0, height / 20 + 10))
+
+    listenButton.set_relative_position((0, 8 * height / 9))
+    listenButton.set_dimensions((width / 3, height / 12))
 
     # Manual calculate button
     manualCalculateButton.set_dimensions((width / 20, width / 20))
@@ -386,6 +392,16 @@ def handleEvent(event):
             manualCalculate.set_text("")
             thread = threading.Thread(target = Calculate.calculator, args = (text,))
             thread.start()
+    
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+        if listenButton.rect.collidepoint(event.pos):
+            state.listening = True
+            thread = threading.Thread(target = STT.listen)
+            thread.start()
+
+    elif event.type == pygame.MOUSEBUTTONUP:
+        if listenButton.rect.collidepoint(event.pos):
+            state.listening = False
 
 while running:
     dt = clock.tick(60) / 1000.0
